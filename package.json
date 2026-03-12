@@ -1,0 +1,19 @@
+{
+  "name": "copart-scraper",
+  "version": "2.0.0",
+  "description": "Copart scraper with Playwright + Axios + p-limit",
+  "main": "scraper.js",
+  "type": "module",
+  "scripts": {
+    "start": "node scraper.js",
+    "scrape": "node scraper.js"
+  },
+  "keywords": ["copart", "scraper", "playwright", "axios"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "p-limit": "^7.3.0",
+    "playwright": "^1.58.2"
+  }
+}
