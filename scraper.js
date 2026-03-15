@@ -874,8 +874,8 @@ async function collectLotNumbers(client, searchConfig, targetLots) {
     console.log(`Collected lot numbers: ${lots.size} (seed from browser response)`);
   }
 
-  // When a custom SEARCH_URL is provided, skip SEARCH_TERMS — filters come from the captured request
-  const plans = SEARCH_URL ? [null] : [null, ...SEARCH_TERMS];
+  // Always iterate SEARCH_TERMS to bypass the 1000-result API cap; each term adds unique lots
+  const plans = [null, ...SEARCH_TERMS];
   for (const term of plans) {
     if (lots.size >= targetLots) break;
     let stalledPages = 0;
