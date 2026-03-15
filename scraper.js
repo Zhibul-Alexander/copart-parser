@@ -13,7 +13,7 @@ const OUTPUT_FILE = process.env.OUTPUT_FILE
   : path.join(OUTPUT_DIR, "copart_cars.json");
 
 
-const TARGET_LOTS = Number(process.env.TARGET_LOTS || 5000);
+const TARGET_LOTS = Number(process.env.TARGET_LOTS || 5000); // 5000
 const CONCURRENCY = Number(process.env.CONCURRENCY || 15);
 const IMAGES_CONCURRENCY = Number(process.env.IMAGES_CONCURRENCY || 2);
 const SEARCH_PAGE_SIZE = Number(process.env.SEARCH_PAGE_SIZE || 100);
@@ -24,7 +24,7 @@ const SESSION_WAIT_MS = Number(process.env.SESSION_WAIT_MS || 15000);
 // Copart search URL with filters. The browser navigates here to capture the filtered API request.
 // SEARCH_TERMS iteration is skipped — filters from the URL are used instead.
 const SEARCH_URL = process.env.SEARCH_URL ||
-  "https://www.copart.com/lotSearchResults?free=false&displayStr=AUTOMOBILE,%5B0%20TO%2034800%5D,%5B2016%20TO%202027%5D&from=%2FvehicleFinder&fromSource=widget&qId=29c7ea24-cf30-4916-bf49-5f4a83ecc29e-1773339576453&searchCriteria=%7B%22query%22:%5B%22*%22%5D,%22filter%22:%7B%22VEHT%22:%5B%22vehicle_type_code:VEHTYPE_V%22%5D,%22TITL%22:%5B%22title_group_code:TITLEGROUP_C%22%5D,%22PRID%22:%5B%22damage_type_code:DAMAGECODE_FR%22,%22damage_type_code:DAMAGECODE_HL%22,%22damage_type_code:DAMAGECODE_MC%22,%22damage_type_code:DAMAGECODE_MN%22,%22damage_type_code:DAMAGECODE_NW%22,%22damage_type_code:DAMAGECODE_RR%22,%22damage_type_code:DAMAGECODE_RO%22,%22damage_type_code:DAMAGECODE_SD%22,%22damage_type_code:DAMAGECODE_ST%22,%22damage_type_code:DAMAGECODE_TP%22,%22damage_type_code:DAMAGECODE_UN%22,%22damage_type_code:DAMAGECODE_VN%22%5D,%22ODM%22:%5B%22odometer_reading_received:%5B0%20TO%20106600%5D%22%5D,%22YEAR%22:%5B%22lot_year:%5B2014%20TO%202027%5D%22%5D%7D,%22searchName%22:%22%22,%22watchListOnly%22:false,%22freeFormSearch%22:false%7D";
+  "https://www.copart.com/lotSearchResults?free=false&displayStr=AUTOMOBILE,%5B0%20TO%2034800%5D,%5B2016%20TO%202027%5D&from=%2FvehicleFinder&fromSource=widget&qId=29c7ea24-cf30-4916-bf49-5f4a83ecc29e-1773432519447&searchCriteria=%7B%22query%22:%5B%22*%22%5D,%22filter%22:%7B%22VEHT%22:%5B%22vehicle_type_code:VEHTYPE_V%22%5D,%22TITL%22:%5B%22title_group_code:TITLEGROUP_C%22,%22title_group_code:TITLEGROUP_S%22%5D,%22PRID%22:%5B%22damage_type_code:DAMAGECODE_FR%22,%22damage_type_code:DAMAGECODE_HL%22,%22damage_type_code:DAMAGECODE_MC%22,%22damage_type_code:DAMAGECODE_MN%22,%22damage_type_code:DAMAGECODE_NW%22,%22damage_type_code:DAMAGECODE_RR%22,%22damage_type_code:DAMAGECODE_RO%22,%22damage_type_code:DAMAGECODE_SD%22,%22damage_type_code:DAMAGECODE_ST%22,%22damage_type_code:DAMAGECODE_TP%22,%22damage_type_code:DAMAGECODE_UN%22,%22damage_type_code:DAMAGECODE_VN%22%5D,%22ODM%22:%5B%22odometer_reading_received:%5B0%20TO%2092100%5D%22%5D,%22YEAR%22:%5B%22lot_year:%5B2010%20TO%202026%5D%22%5D%7D,%22searchName%22:%22%22,%22watchListOnly%22:false,%22freeFormSearch%22:false%7D";
 const SEARCH_TERMS = (process.env.SEARCH_TERMS ||
   "toyota,honda,ford,chevrolet,nissan,bmw,mercedes,audi,hyundai,kia,lexus,jeep,dodge,subaru,volkswagen")
   .split(",")
@@ -339,6 +339,8 @@ function mapLotDetails(rawDetails, lotNumber) {
     make: findFirstKeyValue(rawDetails, ["make", "mkn", "makeName", "make_name"]) || null,
     model: findFirstKeyValue(rawDetails, ["model_group", "modelGroup", "lm", "model", "modelName", "full_model_name"]) || null,
     trim: findFirstKeyValue(rawDetails, ["trim", "tmtp", "trimName", "trim_name"]) || null,
+    body_style: findFirstKeyValue(rawDetails, ["bstl", "vty", "bodyStyle", "body_style", "vehicleStyle", "styleDesc"]) || null,
+    engine: findFirstKeyValue(rawDetails, ["egn", "engine", "eng", "engineDesc", "engine_description", "engineDescription", "engineSize", "engine_size"]) || null,
     full_model_name:
       findFirstKeyValue(rawDetails, [
         "model_detail",
@@ -378,6 +380,8 @@ function normalizeCarRecord(record) {
     make: record?.make ?? null,
     model: record?.model ?? null,
     trim: record?.trim ?? null,
+    body_style: record?.body_style ?? null,
+    engine: record?.engine ?? null,
     full_model_name: record?.full_model_name ?? null,
     build_sheet: record?.build_sheet ?? null,
     item_url: record?.item_url ?? null,
